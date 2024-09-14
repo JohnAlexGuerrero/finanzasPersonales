@@ -1,0 +1,7 @@
+<ul>
+    {% for income in incomes %}
+        <li>{{ income.description }}</li>
+    {% empty %}
+        <li>No hay tareas pendientes.</li>
+    {% endfor %}
+</ul>

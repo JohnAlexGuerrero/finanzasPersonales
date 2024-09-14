@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block content %}
+    <!-- Formulario para agregar tarea -->
+    <form method='POST' hx-post="{% url 'income_list' %}" hx-target="#task-list" hx-swap="outerHTML">
+        {% csrf_token %}
+        {{ form.as_p }}
+        {% comment %} <input type="text" name="title" placeholder="Nueva tarea" required> {% endcomment %}
+        <button type="submit">Agregar tarea</button>
+    </form>
+
+    <!-- Lista de tareas -->
+    <div id="task-list">
+        {% include 'income/partials/list_partial.html' %}
+    </div>
+{% endblock content %}
