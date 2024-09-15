@@ -1,0 +1,5 @@
+<form method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Agregar</button>
+</form>

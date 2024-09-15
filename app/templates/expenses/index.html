@@ -5,8 +5,13 @@
 {% block title %}Expenses{% endblock title %}
 
 {% block content %}
-<h2>Statistics</h2>
+
 <div id="expenses-list">
+    <h2>Statistics</h2>
+    
+    <div>
+        {% include "expenses/new.html" with form=form %}
+    </div>
     {% include "expenses/partials/statistics.html" %}
 </div>
 {% endblock content %}
