@@ -1,6 +1,16 @@
+{% load static %}
+
+{% load filters %}
+
 <ul>
     {% for income in incomes %}
-        <li>{{ income.description }}</li>
+        <li>
+            {{ income.description }} {{ income.value|format_value_total }} {{ income.created }} 
+            <p>
+                <i class="fa fa-arrow-up" aria-hidden="true"></i>
+                Ingreso
+            </p>
+        </li>
     {% empty %}
         <li>No hay tareas pendientes.</li>
     {% endfor %}

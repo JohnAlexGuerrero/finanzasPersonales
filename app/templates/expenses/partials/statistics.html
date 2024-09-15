@@ -1,0 +1,16 @@
+{% load filters %}
+
+<div>
+    <ul>
+        {% for expense in expenses %}
+            <li>
+                <p>{{ expense.description }}</p>
+                <small>6 transactions</small>
+                <p>{{ expense.value|format_value_total }}</p>
+                <input type="range" value="30">
+            </li>
+        {% empty %}
+            <li>No hay gastos registrados</li>
+        {% endfor %}
+    </ul>
+</div>

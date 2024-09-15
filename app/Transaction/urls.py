@@ -1,8 +1,9 @@
 from django.urls import path
 
-from Transaction.views import income_list, add_income
+from Transaction.views import dashboard, add_income, expenses_list
 
 urlpatterns = [
-    path('', income_list, name='income_list'),
+    path('', dashboard, name='dashboard'),
+    path('expenses/', expenses_list, name='expenses_list'),
     path('add-income/', add_income, name='add_incomes'),
 ]

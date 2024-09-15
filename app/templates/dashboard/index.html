@@ -1,0 +1,14 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block title %}Dashboard{% endblock title %}
+
+{% block content %}
+<div>
+    <h2>Transacciones Recientes</h2>
+    <div id="incomes-list">
+        {% include 'income/partials/list_partial.html' %}
+    </div>
+</div>
+{% endblock content %}

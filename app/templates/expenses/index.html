@@ -1,0 +1,12 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block title %}Expenses{% endblock title %}
+
+{% block content %}
+<h2>Statistics</h2>
+<div id="expenses-list">
+    {% include "expenses/partials/statistics.html" %}
+</div>
+{% endblock content %}

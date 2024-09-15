@@ -1,13 +1,31 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 
-from Transaction.models import Income
+from Transaction.models import Income, Expense
 from Transaction.forms import IncomeForm
 
 # Create your views here.
-def income_list(request):
+def dashboard(request):
     incomes = Income.objects.all()
     
+    context = {
+        'incomes': incomes,
+    }
+    
+    return render(request, 'dashboard/index.html', context)
+
+#view: expenses
+def expenses_list(request):
+    name_template = 'expenses/index.html'
+    expenses = Expense.objects.all()
+    
+    context = {
+        'expenses': expenses
+    }
+    
+    return render(request, name_template, context)
+
+def add_income(request):
     # manejo del formulario
     if request.method == 'POST':
         form = IncomeForm(request.POST)
@@ -17,13 +35,4 @@ def income_list(request):
     else:
         form = IncomeForm()
     
-    context = {
-        'incomes': incomes,
-        'form': form
-    }
-    return render(request, 'income/list.html', context)
-
-def add_income(request):
-    pass
-    #     return render(request, 'income/partials/list_partial.html',{'incomes':incomes})
-    # return HttpResponse(status=400)
+    return render(request, 'income/partials/list_partial.html',{'form':form})
