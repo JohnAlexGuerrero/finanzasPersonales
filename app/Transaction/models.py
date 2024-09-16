@@ -28,6 +28,7 @@ class Expense(Transaction):
         TEXNOLOGIA = "Tecnología"
         REGALOS = "Regalos"
         VIAJES = "Viajes"
+        ARRIENDO = "Arriendo"
     
     type = models.CharField(max_length=150, choices=TypeExpense.choices)
     

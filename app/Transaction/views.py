@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from django.shortcuts import get_object_or_404
 
 from django.db.models import Value
 from django.db.models.functions import Concat
@@ -62,6 +63,7 @@ def incomes_list(request):
     
     return render(request, name_template, context)
 
+#views expenses
 #view: muestra una lista de gastos
 def expenses_list(request):
     name_template = 'expenses/partials/list_partial.html'
@@ -72,6 +74,24 @@ def expenses_list(request):
     
     return render(request, name_template, context)
 
+#view delete expenses
+def expense_delete(request, *args, **kwargs):
+    registro = get_object_or_404(Expense, pk=kwargs['pk'])
+    registro.delete()
+    context = {'mensaje': 'Registro eliminado correctamente'}
+    return redirect('add_expenses')
+
+
+    # name_template = 'expenses/new.html'
+    # expense = Expense.objects.get(id=kwargs['pk'])
+    # if expense:
+    #   expense.delete()
+    #   return redirect('add_expenses')
+    # context = {
+    #     "message":"Ingreso eliminado con exito."    
+    # }
+    # return render(request, name_template, context)
+    
 #view statistics of expenses
 def statistics_expenses(request):
     context = {}
@@ -104,12 +124,12 @@ def add_expense(request):
 def get_object_incomes():
     incomes = Income.objects.annotate(
         category=Value('Ingreso')
-    ).values('description','value','created','type','category')
+    ).values('id','description','value','created','type','category')
     return incomes
 
 #function que devuelve la informacion guardada en DB del modelo gastos
 def get_object_expenses():
     expenses = Expense.objects.annotate(
         category=Value('Gasto')
-    ).values('description','value','created','type','category')
+    ).values('id','description','value','created','type','category')
     return expenses

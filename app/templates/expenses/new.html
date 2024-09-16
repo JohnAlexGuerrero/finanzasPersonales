@@ -1,6 +1,8 @@
 {% load static %}
 {% load filters %}
 
+{% include "includes/notification.html" %}
+
 <form method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
     {% csrf_token %}
     {{ form.as_p }}
@@ -20,6 +22,9 @@
                        - {{expense.value|format_value_total}}
                     </p>
                 </p>
+                <a href="{% url "expenses_delete" pk=expense.id %}" hx-delete="true" hx-swap="outerHTML">
+                    Eliminar
+                </a>
             </li>
         {% empty %}
             <li>No hay gastos registrados.</li>

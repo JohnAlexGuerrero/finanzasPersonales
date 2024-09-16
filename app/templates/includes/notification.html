@@ -1,0 +1,10 @@
+<style>
+    div.htmx-swapping p {
+        opacity: 0;
+        transition: opacity 1s ease-out;
+      }
+</style>
+
+<div hx-confirm="Are you sure?" hx-target="closest div" hx-swap="outerHTML swap:1s">
+    <p>{{ message }}</p>
+</div>
