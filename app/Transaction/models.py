@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.db.models import Sum, Count
 
 # Create your models here.
 class Transaction(models.Model):
@@ -36,6 +37,16 @@ class Expense(Transaction):
 
     def __str__(self):
         return self.type
+    
+    def category(self):
+        data = {"name":self.type, "total": self.total_value_by_type(), "number": self.number_transactions_by_type()}
+        return data
+    
+    def total_value_by_type(self):
+        return Expense.objects.filter(type=self.type).aggregate(Sum('value'))['value__sum']
+    
+    def number_transactions_by_type(self):
+        return Expense.objects.filter(type=self.type).aggregate(Count('id'))['id__count']
 
 class Income(Transaction):
     class TypeIncome(models.TextChoices):

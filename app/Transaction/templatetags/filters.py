@@ -13,3 +13,8 @@ def capitalize(text):
     for t in text.split(' '):
         description_capitalize += t.capitalize() + ' ' 
     return description_capitalize
+
+@register.filter(name='pct')
+def pct(value):
+    pct_value = (178000 - value) / 178000
+    return f'{(pct_value * 100):,.0f}'

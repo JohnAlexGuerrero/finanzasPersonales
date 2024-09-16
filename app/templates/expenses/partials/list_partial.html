@@ -1,16 +1,18 @@
 {% load static %}
 
 {% load filters %}
+
 <div id="transactions-list">
-    <h2>Incomes Recientes</h2>
+
+    <h2>Expenses Recientes</h2>
 
     <ul>
-        {% for income in incomes %}
+        {% for expense in expenses %}
             <li>
-                {{ income.description|capitalize }} {{ income.value|format_value_total }} {{ income.created }} 
+                {{ expense.description|capitalize }} {{ expense.value|format_value_total }} {{ expense.created }} 
                 <p>
                     <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                    {{income.category}}
+                    {{ expense.category }}
                 </p>
             </li>
         {% empty %}

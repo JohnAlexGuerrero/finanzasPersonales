@@ -1,0 +1,16 @@
+{% load static %}
+{% load filters %}
+
+<div id="transactions-list">
+    <h2>Transacciones Recientes</h2>
+    <ul>
+        {% for t in transactions %}
+        <li>
+            {{t.created}}
+            {{t.description|capitalize}}
+            {{t.value|format_value_total}}
+            {{t.category}}
+        </li>
+        {% endfor %}
+    </ul>
+</div>

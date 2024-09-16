@@ -1,14 +1,18 @@
 {% extends "base/base.html" %}
 
 {% load static %}
+{% load filters %}
 
 {% block title %}Dashboard{% endblock title %}
 
 {% block content %}
 <div>
-    <h2>Transacciones Recientes</h2>
-    <div id="incomes-list">
-        {% include 'income/partials/list_partial.html' %}
+    <a hx-get="{% url "expenses_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Expenses</a>
+    <a hx-get="{% url "incomes_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Incomes</a>
+    <a hx-get="{% url "transactions_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">All</a>
+    
+    <div id="transactions-list">
+        {% include "transactions/partials/list_partial.html" %}
     </div>
 </div>
 {% endblock content %}
