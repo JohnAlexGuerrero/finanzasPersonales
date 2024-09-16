@@ -7,7 +7,7 @@ from django.db.models.functions import Concat
 from Transaction.models import Income, Expense
 from Transaction.forms import IncomeForm, ExpenseForm
 
-# Create your views here.
+# View para mostrar las transacciones(ingresos, gastos) guardadas
 def transactions_list(request):
     name_template = 'transactions/partials/list_partial.html'
     
@@ -26,26 +26,35 @@ def transactions_list(request):
     
     return render(request, name_template, context)
 
+#view muestra el resument de todas los modelos creados
 def dashboard(request):
     name_template = 'dashboard/index.html'
     
     return render(request, name_template)
 
+#view contiene el formulario de creacion de un nuevo ingreso y su lista
 def add_income(request):
+    name_template = 'income/new.html'
     # manejo del formulario
     if request.method == 'POST':
         form = IncomeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('income_list')
+            return redirect('add_incomes')
+    else:
+        form = IncomeForm()
     
-    return render(request, 'income/partials/list_partial.html')
+    context = {
+        'form': form,
+        'incomes': get_object_incomes().order_by('-created')
+    }
+    
+    return render(request, name_template, context)
 
+#view muestra una lista de ingresos
 def incomes_list(request):
     name_template = 'income/partials/list_partial.html'
-    incomes = Income.objects.annotate(
-        category=Value('Ingreso')
-    ).values('description','value','created','type','category')
+    incomes = get_object_incomes().order_by('-created')
     
     context = {
         'incomes': incomes,
@@ -53,15 +62,12 @@ def incomes_list(request):
     
     return render(request, name_template, context)
 
-#view: expenses
+#view: muestra una lista de gastos
 def expenses_list(request):
     name_template = 'expenses/partials/list_partial.html'
-    expenses = Expense.objects.annotate(
-        category=Value('Gasto')
-    ).values('description','value','created','type','category')
     
     context = {
-        'expenses': expenses
+        'expenses': get_object_expenses().order_by('-created')
     }
     
     return render(request, name_template, context)
@@ -72,18 +78,38 @@ def statistics_expenses(request):
     name_template = 'expenses/partials/statistics.html'
     expenses = Expense.objects.all().order_by('type')
     context['categories'] = [x.category() for x in expenses]
-    print(context)
     
     return render(request, name_template, context)
 
+#view para agregar un nuevo gasto
 def add_expense(request):
-    name_template = 'expense/new.html'
+    name_template = 'expenses/new.html'
     # manejo del formulario
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
-        print(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('expenses_list')
+            return redirect('add_expenses')
+    else:
+        form = ExpenseForm()
     
-    return render(request, name_template)
+    context = {
+        'form':form,
+        'expenses': get_object_expenses().order_by('-created')
+    }
+        
+    return render(request, name_template, context)
+
+#funcion que devuelve la informacion guardad en DB del modelo ingreso
+def get_object_incomes():
+    incomes = Income.objects.annotate(
+        category=Value('Ingreso')
+    ).values('description','value','created','type','category')
+    return incomes
+
+#function que devuelve la informacion guardada en DB del modelo gastos
+def get_object_expenses():
+    expenses = Expense.objects.annotate(
+        category=Value('Gasto')
+    ).values('description','value','created','type','category')
+    return expenses

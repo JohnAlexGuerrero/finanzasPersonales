@@ -1,5 +1,28 @@
+{% load static %}
+{% load filters %}
+
 <form method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Agregar</button>
 </form>
+
+<div id="expenses-list">
+
+    <h2>Expenses</h2>
+
+    <ul>
+        {% for expense in expenses %}
+            <li>
+                {{ expense.description|capitalize }} {{ expense.value|format_value_total }} {{ expense.created }} 
+                <p>
+                    <p>
+                       - {{expense.value|format_value_total}}
+                    </p>
+                </p>
+            </li>
+        {% empty %}
+            <li>No hay gastos registrados.</li>
+        {% endfor %}
+    </ul>
+</div>

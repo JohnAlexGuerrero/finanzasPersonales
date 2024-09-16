@@ -11,12 +11,18 @@
             <li>
                 {{ expense.description|capitalize }} {{ expense.value|format_value_total }} {{ expense.created }} 
                 <p>
-                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                    {{ expense.category }}
+                    <p>
+                        {% if expense.category == 'Gasto' %}
+                            -
+                        {% else %}
+                            +
+                        {% endif %}
+                        {{expense.value|format_value_total}}
+                    </p>
                 </p>
             </li>
         {% empty %}
-            <li>No hay tareas pendientes.</li>
+            <li>No hay gastos registrados.</li>
         {% endfor %}
     </ul>
 </div>

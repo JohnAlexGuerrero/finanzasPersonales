@@ -1,0 +1,25 @@
+{% load static %}
+{% load filters %}
+
+<form method='POST' hx-post="{% url 'add_incomes' %}" hx-target="#incomes-list" hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Agregar</button>
+</form>
+
+<div id="incomes-list">
+    <h2>Incomes</h2>
+
+    <ul>
+        {% for income in incomes %}
+            <li>
+                {{ income.description|capitalize }} {{ income.value|format_value_total }} {{ income.created }} 
+                <p>
+                    +{{income.value|format_value_total}}
+                </p>
+            </li>
+        {% empty %}
+            <li>No hay ingresos registrados.</li>
+        {% endfor %}
+    </ul>
+</div>

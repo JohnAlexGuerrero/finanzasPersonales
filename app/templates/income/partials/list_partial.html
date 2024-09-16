@@ -1,6 +1,7 @@
 {% load static %}
 
 {% load filters %}
+
 <div id="transactions-list">
     <h2>Incomes Recientes</h2>
 
@@ -9,9 +10,13 @@
             <li>
                 {{ income.description|capitalize }} {{ income.value|format_value_total }} {{ income.created }} 
                 <p>
-                    <i class="fa fa-arrow-up" aria-hidden="true"></i>
-                    {{income.category}}
+                    {% if income.category == 'Gasto' %}
+                        -
+                    {% else %}
+                        +
+                    {% endif %}
                 </p>
+                {{income.value|format_value_total}}
             </li>
         {% empty %}
             <li>No hay tareas pendientes.</li>

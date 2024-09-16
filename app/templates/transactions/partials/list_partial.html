@@ -8,7 +8,14 @@
         <li>
             {{t.created}}
             {{t.description|capitalize}}
-            {{t.value|format_value_total}}
+            <p>
+                {% if t.category == 'Gasto' %}
+                    -
+                {% else %}
+                    +
+                {% endif %}
+                {{t.value|format_value_total}}
+            </p>
             {{t.category}}
         </li>
         {% endfor %}

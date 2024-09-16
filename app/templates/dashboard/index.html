@@ -7,6 +7,11 @@
 
 {% block content %}
 <div>
+    <a href="{% url "add_incomes" %}">Agregar Ingreso</a>
+    <a href="{% url "add_expenses" %}">Agregar Gasto</a>
+</div>
+
+<div>
     <a hx-get="{% url "expenses_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Expenses</a>
     <a hx-get="{% url "incomes_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Incomes</a>
     <a hx-get="{% url "transactions_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">All</a>
