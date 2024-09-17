@@ -17,6 +17,9 @@
                 <p>
                     +{{income.value|format_value_total}}
                 </p>
+                <a href="{% url "incomes_delete" pk=income.id %}" hx-delete="true" hx-swap="outerHTML">
+                    Eliminar
+                </a>
             </li>
         {% empty %}
             <li>No hay ingresos registrados.</li>

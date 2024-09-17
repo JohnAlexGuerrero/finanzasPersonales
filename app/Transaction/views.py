@@ -63,6 +63,13 @@ def incomes_list(request):
     
     return render(request, name_template, context)
 
+#view delete income
+def income_delete(request, *args, **kwargs):
+    income = get_object_or_404(Income, pk=kwargs['pk'])
+    income.delete()
+    context = {'mensaje': 'Registro eliminado correctamente'}
+    return redirect('add_incomes')
+
 #views expenses
 #view: muestra una lista de gastos
 def expenses_list(request):
@@ -80,17 +87,6 @@ def expense_delete(request, *args, **kwargs):
     registro.delete()
     context = {'mensaje': 'Registro eliminado correctamente'}
     return redirect('add_expenses')
-
-
-    # name_template = 'expenses/new.html'
-    # expense = Expense.objects.get(id=kwargs['pk'])
-    # if expense:
-    #   expense.delete()
-    #   return redirect('add_expenses')
-    # context = {
-    #     "message":"Ingreso eliminado con exito."    
-    # }
-    # return render(request, name_template, context)
     
 #view statistics of expenses
 def statistics_expenses(request):

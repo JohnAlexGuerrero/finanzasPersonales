@@ -1,0 +1,33 @@
+
+{% load static %}
+{% load filters %}
+
+<div id="active-list">
+    <h2>Active</h2>
+
+    {% include "patrimonio/active/category.html" %}
+
+    <div >
+
+        <ul>
+            {% for active in actives %}
+                <li>
+                    {{ active.description|capitalize }} {{ active.value|format_value_total }} {{ active.created }}
+                    {% if active.is_fijo %}
+                    <p>Activo Fijo</p>
+                    {% else %}
+                        <p>Activo Corriente</p>
+                    {% endif %}
+                    <p>
+                        +{{active.value|format_value_total}}
+                    </p>
+                    {% comment %} <a href="{% url "active_delete" pk=active.id %}" hx-delete="true" hx-swap="outerHTML">
+                        Eliminar
+                    </a> {% endcomment %}
+                </li>
+            {% empty %}
+                <li>Aun no posees activos.</li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>

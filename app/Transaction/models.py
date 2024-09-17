@@ -4,8 +4,15 @@ from django.db.models import Sum, Count
 
 # Create your models here.
 class Transaction(models.Model):
+    class TypePay(models.TextChoices):
+        EFECTIVO = "Efectivo"
+        TRANSFERENCIA = "Transferencia"
+        NEQUI = "Nequi"
+        TARJETA_CREDTO = "Tarjeta de Credito"
+        
     description = models.CharField(max_length=150, null=True, blank=True)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    way_to_pay = models.CharField(max_length=100, choices=TypePay.choices)
     created = models.DateField(auto_now_add=True)
     updated = models.DateField(auto_now_add=True)
     
@@ -29,6 +36,10 @@ class Expense(Transaction):
         REGALOS = "Regalos"
         VIAJES = "Viajes"
         ARRIENDO = "Arriendo"
+        NEGOCIO = "Negocio"
+        TARJETA_CREDITO = "Tarjeta de Credito"
+        MERCANCIAS = "Mercancias"
+        PROVEEDORES = "Proveedores"
     
     type = models.CharField(max_length=150, choices=TypeExpense.choices)
     

@@ -1,0 +1,12 @@
+
+{% load static %}
+{% load filters %}
+
+
+<form method='POST' hx-post="{% url 'add_active' %}" hx-target="#active-list" hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Agregar</button>
+</form>
+
+{% include "patrimonio/active/list_actives.html" %}

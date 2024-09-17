@@ -1,0 +1,18 @@
+{% extends "base/base.html" %}
+
+{% load static %}
+
+{% block title %}Patrimonio{% endblock title %}
+
+{% block content %}
+<h2>Patrimonio</h2>
+
+<a href="{% url "add_active" %}">Nuevo Activos</a>
+<a href="#">Nuevo Pasivo</a>
+
+<div id="patrimonio-list">
+
+    {% include "patrimonio/active/list_actives.html" %}
+</div>
+
+{% endblock content %}

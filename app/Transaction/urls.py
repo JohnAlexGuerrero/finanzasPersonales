@@ -1,6 +1,7 @@
 from django.urls import path
 
-from Transaction.views import dashboard, add_income, expenses_list, add_expense, statistics_expenses, incomes_list, transactions_list, expense_delete
+from Transaction.views import incomes_list, transactions_list, expense_delete, income_delete
+from Transaction.views import dashboard, add_income, expenses_list, add_expense, statistics_expenses
 
 urlpatterns = [
     path('', dashboard, name='dashboard'),
@@ -9,6 +10,7 @@ urlpatterns = [
     path('expenses/', expenses_list, name='expenses_list'),
     path('expenses/<int:pk>/delete/', expense_delete, name='expenses_delete'),
     path('incomes/', incomes_list, name='incomes_list'),
+    path('incomes/<int:pk>/delete/', income_delete, name='incomes_delete'),
     path('add-income/', add_income, name='add_incomes'),
     path('add-expense/', add_expense, name='add_expenses'),
 ]
