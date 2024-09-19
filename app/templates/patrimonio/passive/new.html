@@ -1,0 +1,15 @@
+{% load static %}
+{% load filters %}
+
+{% block title %}Passives{% endblock title %}
+
+{% block content %}
+<form method='POST' hx-post="{% url 'add_passive' %}" hx-target="#active-list" hx-swap="outerHTML">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Agregar</button>
+</form>
+
+{% include "patrimonio/passive/list_passive.html" %}
+
+{% endblock content %}

@@ -29,7 +29,7 @@ class Expense(Transaction):
         EDUCACION = "Educación"
         INPUESTOS = "Impuestos"
         SEGUROS = "Seguros"
-        SERVICIOS_PUBLICOS = "Servicios públicos"
+        SERVICIOS = "Servicios"
         MANTENIMIENTO = "Mantenimiento"
         MODA = "Moda"
         TEXNOLOGIA = "Tecnología"
