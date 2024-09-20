@@ -71,15 +71,27 @@ def income_delete(request, *args, **kwargs):
     return redirect('add_incomes')
 
 #views expenses
-#view: muestra una lista de gastos
-def expenses_list(request):
-    name_template = 'expenses/partials/list_partial.html'
+
+#view home of expenses
+def home_expenses(request):
+    dates = []
+    template_name = 'expenses/index.html'
+    
+    form = ExpenseForm()
+    expenses = get_expenses_list().order_by('-created')
+    dates = set([d.created for d in expenses])
     
     context = {
-        'expenses': get_object_expenses().order_by('-created')
+        "expenses": expenses,
+        "dates": sorted(dates, reverse=True),
+        "form": form
     }
     
-    return render(request, name_template, context)
+    return render(request, template_name, context)
+
+#function: muestra una lista de gastos
+def get_expenses_list():    
+    return Expense.objects.all()
 
 #view delete expenses
 def expense_delete(request, *args, **kwargs):

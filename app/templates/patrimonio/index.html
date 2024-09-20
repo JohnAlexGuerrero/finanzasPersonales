@@ -1,11 +1,21 @@
 {% extends "base/base.html" %}
 
 {% load static %}
+{% load filters %}
 
 {% block title %}Patrimonio{% endblock title %}
 
 {% block content %}
 <h2>Patrimonio</h2>
+
+<div>
+    <p>Activos</p>
+    {{total_actives.value|format_value_total}}
+</div>
+<div>
+    <p>Pasivos</p>
+    {{total_passive.value_t|format_value_total}}
+</div>
 
 <a href="{% url "add_active" %}">Nuevo Activos</a>
 <a href="{% url "add_passive" %}">Nuevo Pasivo</a>

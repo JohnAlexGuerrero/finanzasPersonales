@@ -1,7 +1,6 @@
+
 {% load static %}
 {% load filters %}
-
-{% include "includes/notification.html" %}
 
 <form method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
     {% csrf_token %}
@@ -9,25 +8,26 @@
     <button type="submit">Agregar</button>
 </form>
 
-<div id="expenses-list">
+    {% comment %} <h2>Expenses</h2>
+        <div id="expenses-list">
+            <ul>
+                {% for expense in expenses %}
+                    <li>
+                        {{ expense.description|capitalize }} {{ expense.value|format_value_total }} {{ expense.created }} 
+                        <p>
+                            <p>
+                               - {{expense.value|format_value_total}}
+                            </p>
+                        </p>
+                        <a href="{% url "expenses_delete" pk=expense.id %}" hx-delete="true" hx-swap="outerHTML">
+                            Eliminar
+                        </a>
+                    </li>
+                {% empty %}
+                    <li>No hay gastos registrados.</li>
+                {% endfor %}
+            </ul>
+        </div> {% endcomment %}
 
-    <h2>Expenses</h2>
 
-    <ul>
-        {% for expense in expenses %}
-            <li>
-                {{ expense.description|capitalize }} {{ expense.value|format_value_total }} {{ expense.created }} 
-                <p>
-                    <p>
-                       - {{expense.value|format_value_total}}
-                    </p>
-                </p>
-                <a href="{% url "expenses_delete" pk=expense.id %}" hx-delete="true" hx-swap="outerHTML">
-                    Eliminar
-                </a>
-            </li>
-        {% empty %}
-            <li>No hay gastos registrados.</li>
-        {% endfor %}
-    </ul>
-</div>
+

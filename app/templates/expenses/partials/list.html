@@ -1,0 +1,22 @@
+{% load static %}
+
+{% load filters %}
+
+<div id="expenses-list">
+    {% for date in dates %}
+        {{date|group_datetime}}
+        <hr>
+        {% for expense in expenses %}
+            {% if date == expense.created %}
+            <ul>
+                <li>
+                    {{ expense.description|capitalize }} {{ expense.value|format_value_total }}
+                    <p>
+                       - {{expense.value|format_value_total}}
+                    </p>
+                </li>
+            </ul>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>

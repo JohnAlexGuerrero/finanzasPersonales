@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 
+from django.db.models import Sum
 from Patrimonio.forms import ActiveForm, PassveForm
 
 from Patrimonio.models import Active, Passive
@@ -7,8 +8,13 @@ from Patrimonio.models import Active, Passive
 # Create your views here.
 def Home(request):
     name_template = 'patrimonio/index.html'
+    actives = Active.objects.all()
+    # passives = Passive.objects.all()
+    
     context = {
-        "actives": Active.objects.all(),
+        "actives": actives,
+        "total_actives": actives.aggregate(value_t=Sum('value')),
+        # "total_passives": passives.aggregate(value=Sum('value')) if passives else 0,
         "categories": [x.value for x in Active().Category],
 
     }
