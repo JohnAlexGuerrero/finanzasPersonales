@@ -14,6 +14,9 @@
                     <p>
                        - {{expense.value|format_value_total}}
                     </p>
+                    {% if date|group_datetime == 'Today' %}
+                        <button hx-get="{% url "expenses_delete" pk=expense.id %}" hx-target="#expenses-list" hx-swap="outerHTML">Eliminar</button>
+                    {% endif %}
                 </li>
             </ul>
             {% endif %}

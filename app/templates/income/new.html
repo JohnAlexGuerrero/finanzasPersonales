@@ -7,22 +7,3 @@
     <button type="submit">Agregar</button>
 </form>
 
-<div id="incomes-list">
-    <h2>Incomes</h2>
-
-    <ul>
-        {% for income in incomes %}
-            <li>
-                {{ income.description|capitalize }} {{ income.value|format_value_total }} {{ income.created }} 
-                <p>
-                    +{{income.value|format_value_total}}
-                </p>
-                <a href="{% url "incomes_delete" pk=income.id %}" hx-delete="true" hx-swap="outerHTML">
-                    Eliminar
-                </a>
-            </li>
-        {% empty %}
-            <li>No hay ingresos registrados.</li>
-        {% endfor %}
-    </ul>
-</div>

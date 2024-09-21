@@ -2,10 +2,20 @@
 
 {% load static %}
 
+{% block title %}Incomes{% endblock title %}
+
 {% block content %}
-    <!-- Formulario para agregar tarea -->
 
+<h3>Incomes</h3>
 
-    <!-- Lista de tareas -->
- 
+<span>01 - 25 March, 2020</span>
+
+<div class="row">
+    <div class="col-sm-8">
+        {% include "income/partials/list.html" %}
+    </div>
+    <div class="col-sm-4">
+        {% include "income/new.html" with form=form %}
+    </div>
+</div>
 {% endblock content %}

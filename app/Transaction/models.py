@@ -32,6 +32,7 @@ class Expense(Transaction):
         SERVICIOS = "Servicios"
         MANTENIMIENTO = "Mantenimiento"
         MODA = "Moda"
+        MASCOTAS = "Mascotas"
         TEXNOLOGIA = "Tecnología"
         REGALOS = "Regalos"
         VIAJES = "Viajes"

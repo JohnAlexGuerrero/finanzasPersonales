@@ -12,9 +12,7 @@
 
 <div class="row">
     <div class="col-sm-8">
-        <div id="expenses-list">
-            {% include "expenses/partials/list.html" %}
-        </div>
+        {% include "expenses/partials/list.html" %}
     </div>
     <div class="col-sm-4">
         {% include "expenses/new.html" with form=form %}

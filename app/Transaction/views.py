@@ -33,15 +33,35 @@ def dashboard(request):
     
     return render(request, name_template)
 
+#view home incomes
+def home_incomes(request):
+    template_name = 'income/index.html'
+    dates = []
+    form = IncomeForm
+    incomes = get_incomes_list().order_by('-created')
+    dates = set([x.created for x in incomes])
+    
+    context = {
+        "form": form,
+        "dates": sorted(dates, reverse=True),
+        "incomes": incomes
+    }   
+    
+    return render(request, template_name, context)
+
+#function for list incomes
+def get_incomes_list():
+    return Income.objects.all()
+    
 #view contiene el formulario de creacion de un nuevo ingreso y su lista
 def add_income(request):
-    name_template = 'income/new.html'
+    name_template = 'income/index.html'
     # manejo del formulario
     if request.method == 'POST':
         form = IncomeForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('add_incomes')
+            return render(request, name_template)
     else:
         form = IncomeForm()
     
@@ -72,33 +92,41 @@ def income_delete(request, *args, **kwargs):
 
 #views expenses
 
+#function: get_object_expenses
+def get_object_expenses():
+    expenses = Expense.objects.all().order_by('-created')
+    dates = set([d.created for d in expenses])
+    return expenses, sorted(dates, reverse=True)
+
 #view home of expenses
 def home_expenses(request):
-    dates = []
     template_name = 'expenses/index.html'
     
     form = ExpenseForm()
-    expenses = get_expenses_list().order_by('-created')
-    dates = set([d.created for d in expenses])
+    expenses, dates = get_object_expenses()
     
     context = {
         "expenses": expenses,
-        "dates": sorted(dates, reverse=True),
+        "dates": dates,
         "form": form
     }
     
     return render(request, template_name, context)
 
-#function: muestra una lista de gastos
-def get_expenses_list():    
-    return Expense.objects.all()
-
 #view delete expenses
 def expense_delete(request, *args, **kwargs):
+    name_template = 'expenses/partials/list.html'
+
     registro = get_object_or_404(Expense, pk=kwargs['pk'])
     registro.delete()
-    context = {'mensaje': 'Registro eliminado correctamente'}
-    return redirect('add_expenses')
+    expenses, dates = get_object_expenses()
+    
+    context = {
+        "expenses": expenses,
+        "dates": dates,
+    }
+    
+    return render(request, name_template, context)
     
 #view statistics of expenses
 def statistics_expenses(request):
@@ -111,23 +139,21 @@ def statistics_expenses(request):
 
 #view para agregar un nuevo gasto
 def add_expense(request):
-    name_template = 'expenses/new.html'
+    name_template = 'expenses/partials/list.html'
     # manejo del formulario
     if request.method == 'POST':
         form = ExpenseForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('add_expenses')
-    else:
-        form = ExpenseForm()
-    
-    context = {
-        'form':form,
-        'expenses': get_object_expenses().order_by('-created')
-    }
+            expenses, dates = get_object_expenses()
+            
+            context = {
+                'expenses': expenses,
+                'dates': dates
+            }
+            
+            return render(request, name_template, context)
         
-    return render(request, name_template, context)
-
 #funcion que devuelve la informacion guardad en DB del modelo ingreso
 def get_object_incomes():
     incomes = Income.objects.annotate(
@@ -136,8 +162,8 @@ def get_object_incomes():
     return incomes
 
 #function que devuelve la informacion guardada en DB del modelo gastos
-def get_object_expenses():
-    expenses = Expense.objects.annotate(
-        category=Value('Gasto')
-    ).values('id','description','value','created','type','category')
-    return expenses
+# def get_object_expenses():
+#     expenses = Expense.objects.annotate(
+#         category=Value('Gasto')
+#     ).values('id','description','value','created','type','category')
+#     return expenses

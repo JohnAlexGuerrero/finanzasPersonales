@@ -1,0 +1,30 @@
+{% load static %}
+
+{% load filters %}
+
+
+<div id="incomes-list">
+    {% for date in dates %}
+        {{date|group_datetime}}
+        <hr>
+        {% for income in incomes %}
+            {% if date == income.created %}
+            <ul>
+                <li class="card-transaction">
+                    <div class="img"></div>
+                    <div class="textBox">
+                        <div class="textContent">
+                            <p class="h1">{{ income.type|capitalize }}</p>
+                            <span class="span">{{ income.created }}</span>
+                        </div>
+                        <p class="p">{{ income.description|capitalize }}</p>
+                        <p>
+                        + {{income.value|format_value_total}}
+                        </p>
+                    <div>
+                </li>
+            </ul>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+</div>
