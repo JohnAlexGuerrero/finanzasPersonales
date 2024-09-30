@@ -1,6 +1,10 @@
 from django.db import models
 from django.urls import reverse
-from django.db.models import Sum, Count
+from django.db.models import Sum, Count, Avg, Min, Max
+
+from decimal import Decimal
+
+import pandas as pd
 
 # Create your models here.
 class Transaction(models.Model):
@@ -51,14 +55,37 @@ class Expense(Transaction):
     def __str__(self):
         return self.type
     
-    def category(self):
-        data = {"name":self.type, "total": self.total_value_by_type(), "number": self.number_transactions_by_type()}
+    def statistics(self):
+        data = {
+            "count": self.count(),
+            "mean": self.mean(),
+            "min": 0,
+            "max": 0,
+            "25%":0,
+            "50%":0,
+            "75%":0,
+        }
+        
         return data
     
-    def total_value_by_type(self):
+    def perc_75(self):
+        expenses = Expense.objects.filter(type=self.type)
+        df = pd.DataFrame({"value":[float(x.value) for x in expenses]})
+        print(df)
+        percentile_75 = df['value'].quantile(0.75)
+        print(percentile_75)
+        return percentile_75
+
+    def max_value(self):
+        return Expense.objects.filter(type=self.type).aggregate(Max('value'))['value__max']
+    
+    def mean(self):
+        return Expense.objects.filter(type=self.type).aggregate(Avg('value'))['value__avg']
+    
+    def total_value(self):
         return Expense.objects.filter(type=self.type).aggregate(Sum('value'))['value__sum']
     
-    def number_transactions_by_type(self):
+    def count(self):
         return Expense.objects.filter(type=self.type).aggregate(Count('id'))['id__count']
 
 class Income(Transaction):

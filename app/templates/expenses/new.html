@@ -2,32 +2,23 @@
 {% load static %}
 {% load filters %}
 
-<form method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
+<form id="form" method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Agregar</button>
 </form>
 
-    {% comment %} <h2>Expenses</h2>
-        <div id="expenses-list">
-            <ul>
-                {% for expense in expenses %}
-                    <li>
-                        {{ expense.description|capitalize }} {{ expense.value|format_value_total }} {{ expense.created }} 
-                        <p>
-                            <p>
-                               - {{expense.value|format_value_total}}
-                            </p>
-                        </p>
-                        <a href="{% url "expenses_delete" pk=expense.id %}" hx-delete="true" hx-swap="outerHTML">
-                            Eliminar
-                        </a>
-                    </li>
-                {% empty %}
-                    <li>No hay gastos registrados.</li>
-                {% endfor %}
-            </ul>
-        </div> {% endcomment %}
+<script>
+    const form = document.querySelector('#form')
+
+    function clearForm(){
+        form.value.value = ''
+        form.description.value = ''
+        form.type.value = ''
+        form.way_to_pay.value = ''
+    }
+    
+</script>
 
 
 

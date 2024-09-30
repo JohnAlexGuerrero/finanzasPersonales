@@ -1,15 +1,16 @@
 {% load filters %}
 
 <div>
-    <h2>Statistics</h2>
+    <h2>Where your money go?</h2>
 
     <ul>
-        {% for category in categories %}
+        {% for category in statistics %}
             <li>
                 <p>{{ category.name }}</p>
-                <small>{{ category.number }} transactions</small>
+                <p>Mean: {{ category.mean|format_value_total }}</p>
+                <small>{{ category.count }} transactions</small>
                 <p>{{ category.total|format_value_total }}</p>
-                <input type="range" value={{ category.total|pct }}>
+                <input type="range" value={{ category.percentile75 }} max={{ category.max }}>
             </li>
         {% empty %}
             <li>No hay gastos registrados</li>

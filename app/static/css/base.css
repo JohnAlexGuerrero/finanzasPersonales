@@ -1,0 +1,28 @@
+
+
+body{
+    background-color: black;
+    height: 100%;
+}
+
+.container-main{
+    background-color: white;
+    border: 1px solid #EEEE;
+    margin-left: 15rem;
+    margin-right: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 20px 20px 20px 20px;
+    width: 80%;
+    height: 590px;
+}
+
+.content{
+    padding: 1rem 1.5rem;
+}
+
+.display-center{
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+}

@@ -1,4 +1,4 @@
-{% extends "base/base.html" %}
+{% extends "base/index.html" %}
 
 {% load static %}
 {% load filters %}
@@ -6,15 +6,30 @@
 {% block title %}Dashboard{% endblock title %}
 
 {% block content %}
-<div>
-    <a href="{% url "add_incomes" %}">Agregar Ingreso</a>
-    <a href="{% url "add_expenses" %}">Agregar Gasto</a>
+
+<h1>Dashboard</h1>
+
+<div class="row">
+    <div class="col-sm-7">
+        <div class="display-center">
+            {% include "includes/cardDashboard.html" with title="balance" value=39.80%}
+            {% include "includes/cardDashboard.html" with title="Ingresos" value=139.80%}
+            {% include "includes/cardDashboard.html" with title="Gastos" value=239.80%}
+        </div>
+    </div>
+    <div class="col-sm-5"></div>
 </div>
 
+
+{% comment %} <div>
+    <a href="{% url "add_incomes" %}">Agregar Ingreso</a>
+    <a href="{% url "add_expenses" %}">Agregar Gasto</a> {% endcomment %}
+{% comment %} </div> {% endcomment %}
+
 <div>
-    <a hx-get="{% url "expenses_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Expenses</a>
+    {% comment %} <a hx-get="{% url "expenses_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Expenses</a>
     <a hx-get="{% url "incomes_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Incomes</a>
-    <a hx-get="{% url "transactions_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">All</a>
+    <a hx-get="{% url "transactions_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">All</a> {% endcomment %}
     
     <div id="transactions-list">
         {% include "transactions/partials/list_partial.html" %}

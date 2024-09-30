@@ -105,9 +105,25 @@ def home_expenses(request):
     form = ExpenseForm()
     expenses, dates = get_object_expenses()
     
+    
     context = {
         "expenses": expenses,
         "dates": dates,
+        "statistics": [
+                {
+                    "name": exp.type,
+                    "total": exp.total_value(), 
+                    "count": exp.count(),
+                    "mean": exp.mean(),
+                    "min": 0,
+                    "max": exp.max_value(),
+                    "25%":0,
+                    "50%":0,
+                    "percentile75": exp.perc_75(),
+                }
+                for exp in expenses
+            ],
+        # "categories": [c for c in expenses.order_by('type')], #statistics_expenses(expenses),
         "form": form
     }
     
@@ -128,15 +144,10 @@ def expense_delete(request, *args, **kwargs):
     
     return render(request, name_template, context)
     
-#view statistics of expenses
-def statistics_expenses(request):
-    context = {}
-    name_template = 'expenses/partials/statistics.html'
-    expenses = Expense.objects.all().order_by('type')
-    context['categories'] = [x.category() for x in expenses]
+#function statistics of expenses
+def statistics_expenses(type_name):
+    return Expense.objects.filter(type=type_name).first()
     
-    return render(request, name_template, context)
-
 #view para agregar un nuevo gasto
 def add_expense(request):
     name_template = 'expenses/partials/list.html'
@@ -149,7 +160,7 @@ def add_expense(request):
             
             context = {
                 'expenses': expenses,
-                'dates': dates
+                'dates': dates,
             }
             
             return render(request, name_template, context)
