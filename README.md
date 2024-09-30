@@ -1,7 +1,5 @@
-##RoadMap##
+##RoadMap
+|#| Ejercicio | video |
+-----------------------
+|1|Scroll infinity | |
 
-------- -------------- ----------
-|  #   | Ejercicio   | video     |
-------- -------------- -----------
-| 1    | Scroll Infinity with htmx | |
-------- --------------------------- --
