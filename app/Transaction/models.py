@@ -1,6 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.db.models import Sum, Count, Avg, Min, Max
+from django.contrib.auth.models import User
 
 from decimal import Decimal
 
@@ -13,7 +14,8 @@ class Transaction(models.Model):
         TRANSFERENCIA = "Transferencia"
         NEQUI = "Nequi"
         TARJETA_CREDTO = "Tarjeta de Credito"
-        
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     description = models.CharField(max_length=150, null=True, blank=True)
     value = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     way_to_pay = models.CharField(max_length=100, choices=TypePay.choices)
@@ -45,6 +47,7 @@ class Expense(Transaction):
         TARJETA_CREDITO = "Tarjeta de Credito"
         MERCANCIAS = "Mercancias"
         PROVEEDORES = "Proveedores"
+        OTROS = "Otros"
     
     type = models.CharField(max_length=150, choices=TypeExpense.choices)
     
