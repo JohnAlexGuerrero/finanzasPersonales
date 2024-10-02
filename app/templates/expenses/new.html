@@ -8,17 +8,7 @@
     <button type="submit">Agregar</button>
 </form>
 
-<script>
-    const form = document.querySelector('#form')
-
-    function clearForm(){
-        form.value.value = ''
-        form.description.value = ''
-        form.type.value = ''
-        form.way_to_pay.value = ''
-    }
-    
-</script>
+{% include "expenses/partials/list.html" %}
 
 
 

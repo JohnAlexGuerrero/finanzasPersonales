@@ -4,12 +4,13 @@ from django.urls import path
 # from Transaction.views import dashboard, add_income, expenses_list, add_expense, statistics_expenses
 from Transaction.views import home_expenses, add_expense, expense_delete
 from Transaction.views import home_incomes, add_income
+from Transaction.views import ExpenseCreateView
 
 urlpatterns = [
     # path('', dashboard, name='dashboard'),
     
     path('expenses/', home_expenses, name='home_expenses'),
-    path('add-expense/', add_expense, name='add_expenses'),
+    path('add-expense/', ExpenseCreateView.as_view(), name='add_expenses'),
     path('expenses/<int:pk>/delete/', expense_delete, name='expenses_delete'),
     
     # path('expenses/statistics/', statistics_expenses, name='expenses_statistics'),

@@ -20,11 +20,11 @@
     <div class="col-sm-5"></div>
 </div>
 
+<a href="{% url "add_expenses" %}">Agregar Gasto</a> 
 
 {% comment %} <div>
     <a href="{% url "add_incomes" %}">Agregar Ingreso</a>
-    <a href="{% url "add_expenses" %}">Agregar Gasto</a> {% endcomment %}
-{% comment %} </div> {% endcomment %}
+</div> {% endcomment %}
 
 <div>
     {% comment %} <a hx-get="{% url "expenses_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Expenses</a>
@@ -32,7 +32,24 @@
     <a hx-get="{% url "transactions_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">All</a> {% endcomment %}
     
     <div id="transactions-list">
-        {% include "transactions/partials/list_partial.html" %}
+        <h2>Transacciones Recientes</h2>
+        <ul>
+            {% for t in transactions %}
+            <li>
+                {{t.created}}
+                {{t.description|capitalize}}
+                <p>
+                    {% if t.category == 'Gasto' %}
+                        -
+                    {% else %}
+                        +
+                    {% endif %}
+                    {{t.value|format_value_total}}
+                </p>
+                {{t.category}}
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock content %}

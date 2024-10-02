@@ -3,11 +3,11 @@
 {% load filters %}
 
 <div id="expenses-list">
-    {% for date in dates %}
-        {{date|group_datetime}}
+    {% comment %} {% for date in dates %} {% endcomment %}
+        {% comment %} {{date|group_datetime}} {% endcomment %}
         <hr>
         {% for expense in expenses %}
-            {% if date == expense.created %}
+            {% comment %} {% if date == expense.created %} {% endcomment %}
             <ul>
                 <li>
                     {{ expense.description|capitalize }} {{ expense.value|format_value_total }}
@@ -19,7 +19,9 @@
                     {% endif %}
                 </li>
             </ul>
-            {% endif %}
+        {% empty %}
+            no hay gastos registrados aun.
+            {% comment %} {% endif %} {% endcomment %}
         {% endfor %}
-    {% endfor %}
+    {% comment %} {% endfor %} {% endcomment %}
 </div>

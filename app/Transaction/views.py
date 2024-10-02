@@ -1,12 +1,33 @@
+from django.views.generic import CreateView
+from django.urls import reverse_lazy
 from django.shortcuts import render, redirect
-from django.http import HttpResponse
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Value
 from django.db.models.functions import Concat
 
 from Transaction.models import Income, Expense
 from Transaction.forms import IncomeForm, ExpenseForm
+
+#view creating new expenses
+class ExpenseCreateView(LoginRequiredMixin, CreateView):
+    model = Expense
+    form_class = ExpenseForm
+    template_name = "expenses/new.html"
+    context_object_name = 'expenses'
+    success_url = reverse_lazy('add_expenses')
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["expenses"] = get_object_expenses(self.request.user)
+        return context
+    
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+    
 
 # View para mostrar las transacciones(ingresos, gastos) guardadas
 def transactions_list(request):
@@ -172,9 +193,10 @@ def get_object_incomes():
     ).values('id','description','value','created','type','category')
     return incomes
 
-#function que devuelve la informacion guardada en DB del modelo gastos
-# def get_object_expenses():
-#     expenses = Expense.objects.annotate(
-#         category=Value('Gasto')
-#     ).values('id','description','value','created','type','category')
-#     return expenses
+# function que devuelve la informacion guardada en DB del modelo gastos
+def get_object_expenses(user):
+    expenses = Expense.objects.filter(user=user).annotate(
+        category=Value('Gasto')
+    ).values('id','description','value','created','type','category')
+    print(expenses)
+    return expenses
