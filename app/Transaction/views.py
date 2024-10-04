@@ -1,8 +1,8 @@
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView, TemplateView
 from django.urls import reverse_lazy
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
 from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from django.db.models import Value
@@ -11,24 +11,56 @@ from django.db.models.functions import Concat
 from Transaction.models import Income, Expense
 from Transaction.forms import IncomeForm, ExpenseForm
 
-#view creating new expenses
+#view create expense
 class ExpenseCreateView(LoginRequiredMixin, CreateView):
     model = Expense
     form_class = ExpenseForm
     template_name = "expenses/new.html"
-    context_object_name = 'expenses'
-    success_url = reverse_lazy('add_expenses')
+    # get_context_name = 'expenses'
     
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["expenses"] = get_object_expenses(self.request.user)
-        return context
+    # success_url = reverse_lazy('expenses')
+    
+    def get_success_url(self):
+        return reverse_lazy('expenses_list')
     
     def form_valid(self, form):
         form.instance.user = self.request.user
+        # if self.request.is_ajax():
+        #     return JsonResponse(get_object_expenses(self.request.user).order_by('-id'))
+        # else:
         return super().form_valid(form)
     
+#view list expenses
+class ExpenseListView(LoginRequiredMixin, ListView):
+    model = Expense
+    template_name = "expenses/partials/list.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["expenses"] = get_object_expenses(self.request.user).order_by('-id')
+        return context
 
+
+#view home of expenses
+class ExpenseHomeView(LoginRequiredMixin, TemplateView):
+    template_name = "expenses/index.html"
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["expenses"] = get_object_expenses(self.request.user).order_by('-id')
+        context['form'] = ExpenseForm()
+        return context
+
+#view incomes home
+class IncomeHomeView(TemplateView):
+    template_name = "income/index.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["expenses"] = get_object_expenses(self.request.user).order_by('-id')
+        context['form'] = ExpenseForm()
+        return context
+    
 # View para mostrar las transacciones(ingresos, gastos) guardadas
 def transactions_list(request):
     name_template = 'transactions/partials/list_partial.html'
@@ -40,7 +72,7 @@ def transactions_list(request):
         category=Value('Gasto')
     ).values('description','value','created','type','category')
     
-    transactions = expenses.union(incomes).order_by('-created')
+    transactions = expenses.union(incomes).order_by('id')
     
     context = {
         'transactions': transactions,
@@ -156,11 +188,11 @@ def expense_delete(request, *args, **kwargs):
 
     registro = get_object_or_404(Expense, pk=kwargs['pk'])
     registro.delete()
-    expenses, dates = get_object_expenses()
+    expenses = get_object_expenses(request.user)
     
     context = {
         "expenses": expenses,
-        "dates": dates,
+        # "dates": dates,
     }
     
     return render(request, name_template, context)
@@ -177,11 +209,11 @@ def add_expense(request):
         form = ExpenseForm(request.POST)
         if form.is_valid():
             form.save()
-            expenses, dates = get_object_expenses()
+            expenses, dates = get_object_expenses(request.user)
             
             context = {
                 'expenses': expenses,
-                'dates': dates,
+                # 'dates': dates,
             }
             
             return render(request, name_template, context)
@@ -198,5 +230,4 @@ def get_object_expenses(user):
     expenses = Expense.objects.filter(user=user).annotate(
         category=Value('Gasto')
     ).values('id','description','value','created','type','category')
-    print(expenses)
     return expenses

@@ -2,13 +2,14 @@
 {% load static %}
 {% load filters %}
 
-<form id="form" method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#expenses-list" hx-swap="outerHTML">
+<form id="form" method='POST' hx-post="{% url 'add_expenses' %}" hx-target="#content-expenses" hx-swap="outerHTML">
     {% csrf_token %}
     {{ form.as_p }}
     <button type="submit">Agregar</button>
 </form>
 
-{% include "expenses/partials/list.html" %}
+
+
 
 
 

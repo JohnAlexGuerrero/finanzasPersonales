@@ -20,11 +20,9 @@
     <div class="col-sm-5"></div>
 </div>
 
-<a href="{% url "add_expenses" %}">Agregar Gasto</a> 
+<a href="{% url "expenses" %}">Agregar Gasto</a> 
 
-{% comment %} <div>
-    <a href="{% url "add_incomes" %}">Agregar Ingreso</a>
-</div> {% endcomment %}
+<a href="{% url "incomes" %}">Agregar Ingreso</a>
 
 <div>
     {% comment %} <a hx-get="{% url "expenses_list" %}" hx-target="#transactions-list" hx-swap="outerHTML">Expenses</a>

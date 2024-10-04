@@ -5,18 +5,19 @@
 {% block title %}Expenses{% endblock title %}
 
 {% block content %}
-
 <h3>Expenses</h3>
 
 <span>01 - 25 March, 2020</span>
 
 <div class="row">
     <div class="col-sm-8">
+        <div id="content-expenses">
         {% include "expenses/partials/list.html" %}
+        </div>
     </div>
     <div class="col-sm-4">
-        {% include "expenses/new.html" with form=form %}
-        {% include "expenses/partials/statistics.html" %}
+        {% include "expenses/new.html" %}
+        {% comment %} {% include "expenses/partials/statistics.html" %} {% endcomment %}
     </div>
 </div>
 {% endblock content %}

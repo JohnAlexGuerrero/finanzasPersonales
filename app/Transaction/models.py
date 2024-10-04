@@ -33,6 +33,7 @@ class Expense(Transaction):
         ENTRETENIMIENTO = "Entretenimiento"
         SALUD = "Salud"
         EDUCACION = "Educación"
+        RESTAURANTE = "Restaurante"
         INPUESTOS = "Impuestos"
         SEGUROS = "Seguros"
         SERVICIOS = "Servicios"
